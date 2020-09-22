@@ -1,4 +1,5 @@
 import {useCallback, useEffect, useState} from "react";
+import axios from "axios";
 
 const useToggle = (initialValue = false) => {
     const [open, setOpen] = useState(initialValue);
@@ -129,14 +130,14 @@ const useEntityProgress = (context, onClose) => {
     return [busy, error];
 };
 
-const useFetch = (url, initialState, pollTimeout) => {
+const useFetch = (url, initialState) => {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
 
     const getData = useCallback((url, callback) => {
         axios
-            .get(url, getAxiosDefaultConfig())
+            .get(url)
             .then((res) => {
                 setData(res.data);
                 setError(null);
@@ -150,21 +151,10 @@ const useFetch = (url, initialState, pollTimeout) => {
     }, []);
 
     useEffect(() => {
-        getData(url, () => setIsLoading(false));
-    }, [url, getData]);
-
-    const pollRef = useRef();
-    useEffect(() => {
-        clearInterval(pollRef.current);
-        if (pollTimeout) {
-            pollRef.current = setInterval(() => {
-                getData(url);
-            }, pollTimeout * 1000);
+        if (url) {
+            getData(url);
         }
-        return () => {
-            clearInterval(pollRef.current);
-        };
-    }, [pollTimeout, url, getData]);
+    }, [url, getData]);
 
     if (!url) {
         // Fix for not make requests with invalid url
@@ -194,5 +184,6 @@ export {
     useForm,
     useProgress,
     useEntityProgress,
-    useFiltered
+    useFiltered,
+    useFetch
 }
