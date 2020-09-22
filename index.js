@@ -12,14 +12,14 @@ const useToggle = (initialValue = false) => {
     return [open, handleToggle];
 };
 const useListToggle = () => {
-    const layout = sessionStorage.getItem("repox_layout");
+    const layout = sessionStorage.getItem("default_layout");
     const [isList, toggle] = useToggle(layout === "LIST");
 
     useEffect(() => {
         if (isList) {
-            sessionStorage.setItem("repox_layout", "LIST");
+            sessionStorage.setItem("default_layout", "LIST");
         } else {
-            sessionStorage.setItem("repox_layout", "DEFAULT");
+            sessionStorage.setItem("default_layout", "DEFAULT");
         }
     }, [isList]);
 
