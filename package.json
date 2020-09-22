@@ -1,0 +1,25 @@
+{
+  "name": "react-generic-hooks",
+  "version": "1.1.0",
+  "description": "Generic react hooks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karyofyllis/hooks.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "Giorgos Karyofyllis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karyofyllis/hooks/issues"
+  },
+  "homepage": "https://github.com/karyofyllis/hooks#readme",
+  "dependencies": {
+    "axios": "^0.20.0"
+  }
+}
