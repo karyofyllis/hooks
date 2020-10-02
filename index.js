@@ -130,14 +130,15 @@ const useEntityProgress = (context, onClose) => {
     return [busy, error];
 };
 
-const useFetch = (url, initialState) => {
+
+const useFetch = (url, initialState, pollTimeout, eventTrigger) => {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
 
     const getData = useCallback((url, callback) => {
         axios
-            .get(url)
+            .get(url, getAxiosDefaultConfig())
             .then((res) => {
                 setData(res.data);
                 setError(null);
@@ -152,17 +153,27 @@ const useFetch = (url, initialState) => {
 
     useEffect(() => {
         if (url) {
-            getData(url);
+            setIsLoading(true);
+            getData(url, () => setIsLoading(false));
         }
-    }, [url, getData]);
+    }, [url, getData, eventTrigger]);
 
-    if (!url) {
-        // Fix for not make requests with invalid url
-        // returns the default state
-        return [false, initialState, "", setData];
-    }
-    return [isLoading, data || initialState, error, setData];
+    const pollRef = useRef();
+    useEffect(() => {
+        clearInterval(pollRef.current);
+        if (pollTimeout) {
+            pollRef.current = setInterval(() => {
+                getData(url);
+            }, pollTimeout * 1000);
+        }
+        return () => {
+            clearInterval(pollRef.current);
+        };
+    }, [pollTimeout, url, getData]);
+
+    return [isLoading, data || initialState, error];
 };
+
 
 const useFiltered = (array, query, filterProps) => {
     return useMemo(() => {
