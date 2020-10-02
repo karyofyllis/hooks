@@ -1,6 +1,6 @@
 {
   "name": "react-generic-hooks",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Generic react hooks",
   "main": "index.js",
   "scripts": {
