@@ -138,7 +138,7 @@ const useFetch = (url, initialState, pollTimeout, eventTrigger) => {
 
     const getData = useCallback((url, callback) => {
         axios
-            .get(url, getAxiosDefaultConfig())
+            .get(url)
             .then((res) => {
                 setData(res.data);
                 setError(null);
